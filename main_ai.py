@@ -32,6 +32,7 @@ import argparse
 import os.path
 import sys
 import time
+import tempfile
 
 import tensorflow as tf
 
@@ -118,11 +119,12 @@ def inputs(train, batch_size, num_epochs):
     dataset = dataset.batch(batch_size)
 
     iterator = dataset.make_one_shot_iterator()
+
   return iterator.get_next()
 
 
 def run_training():
-  """Train MNIST for a number of steps."""
+  """Train Photoes for a number of steps."""
 
   # Tell TensorFlow that the model will be built into the default Graph.
   with tf.Graph().as_default():
@@ -145,6 +147,9 @@ def run_training():
     init_op = tf.group(tf.global_variables_initializer(),
                        tf.local_variables_initializer())
 
+    #create saver
+    saver = tf.train.Saver()
+
     # Create a session for running operations in the Graph.
     with tf.Session() as sess:
       # Initialize the variables (the trained variables and the
@@ -166,12 +171,14 @@ def run_training():
           duration = time.time() - start_time
 
           # Print an overview fairly often.
-          if step % 1 == 0:
-            print('Step %d: loss = %.2f (%.3f sec)' % (step, loss_value,
-                                                     duration))
+          if step % 20 == 0:
+            print('Step %d: loss = %.2f (%.3f sec)' % (step, loss_value, duration))
           step += 1
       except tf.errors.OutOfRangeError:
         print('Done training for %d epochs, %d steps.' % (FLAGS.num_epochs, step))
+        # Save the graph
+        save_path = saver.save(sess, FLAGS.save_dir)
+        print("Model saved in file %s" % save_path)
 
 def main(_):
   run_training()
@@ -214,6 +221,12 @@ if __name__ == '__main__':
       type=str,
       default='',
       help='Directory with the training data.'
+  )
+  parser.add_argument(
+      '--save_dir',
+      type=str,
+      default='./graph/model.ckpt',
+      help='Directory to save graph'
   )
   FLAGS, unparsed = parser.parse_known_args()
   tf.app.run(main=main, argv=[sys.argv[0]] + unparsed)
