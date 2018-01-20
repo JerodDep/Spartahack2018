@@ -176,6 +176,8 @@ def run_training():
           step += 1
       except tf.errors.OutOfRangeError:
         print('Done training for %d epochs, %d steps.' % (FLAGS.num_epochs, step))
+        writer = tf.summary.FileWriter("./", sess.graph)
+        writer.close()
         # Save the graph
         save_path = saver.save(sess, FLAGS.save_dir)
         print("Model saved in file %s" % save_path)
@@ -195,8 +197,8 @@ if __name__ == '__main__':
   parser.add_argument(
       '--num_epochs',
       type=int,
-      default=2,
       help='Number of epochs to run trainer.'
+      default=2,
   )
   parser.add_argument(
       '--hidden1',
