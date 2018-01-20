@@ -1,15 +1,13 @@
 
-
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-import numpy as np
-from time import gmtime, strftime
-
-import os
-#import Image
-
-
 """
+  ██████╗ ███████╗ █████╗ ████████╗██╗  ██╗    ██████╗ ███████╗██████╗  ██████╗███████╗██████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+  ██╔══██╗██╔════╝██╔══██╗╚══██╔══╝██║  ██║    ██╔══██╗██╔════╝██╔══██╗██╔════╝██╔════╝██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+  ██║  ██║█████╗  ███████║   ██║   ███████║    ██████╔╝█████╗  ██████╔╝██║     █████╗  ██████╔╝   ██║   ██║██║   ██║██╔██╗ ██║
+  ██║  ██║██╔══╝  ██╔══██║   ██║   ██╔══██║    ██╔═══╝ ██╔══╝  ██╔══██╗██║     ██╔══╝  ██╔═══╝    ██║   ██║██║   ██║██║╚██╗██║
+  ██████╔╝███████╗██║  ██║   ██║   ██║  ██║    ██║     ███████╗██║  ██║╚██████╗███████╗██║        ██║   ██║╚██████╔╝██║ ╚████║
+  ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚═╝     ╚══════╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+
+
 Author: Jeffrey Valentic
 Date: 1/20/2018
 File: image_class.py
@@ -38,6 +36,14 @@ send_alert():
     returns true (y) or false (n)
     
 """
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import numpy as np
+from time import gmtime, strftime
+
+import os
+#import Image
+
 
 class vCase:
     
