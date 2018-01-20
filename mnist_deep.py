@@ -29,8 +29,6 @@ import argparse
 import sys
 import tempfile
 
-from tensorflow.examples.tutorials.mnist import input_data
-
 import tensorflow as tf
 
 FLAGS = None
@@ -51,7 +49,7 @@ def deepnn(x):
   # Last dimension is for "features" - there is only one here, since images are
   # grayscale -- it would be 3 for an RGB image, 4 for RGBA, etc.
   with tf.name_scope('reshape'):
-    x_image = tf.reshape(x, [-1, 500, 500, 3])
+    x_image = tf.reshape(x, [-1, 200, 200, 3])
 
   # First convolutional layer - maps one grayscale image to 32 feature maps.
   with tf.name_scope('conv1'):
@@ -76,10 +74,10 @@ def deepnn(x):
   # Fully connected layer 1 -- after 2 round of downsampling, our 28x28 image
   # is down to 7x7x64 feature maps -- maps this to 1024 features.
   with tf.name_scope('fc1'):
-    W_fc1 = weight_variable([7 * 7 * 64, 1024])
+    W_fc1 = weight_variable([7 * 7 * 36, 1024])
     b_fc1 = bias_variable([1024])
 
-    h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
+    h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 36])
     h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
 
   # Dropout - controls the complexity of the model, prevents co-adaptation of
@@ -90,8 +88,8 @@ def deepnn(x):
 
   # Map the 1024 features to 10 classes, one for each digit
   with tf.name_scope('fc2'):
-    W_fc2 = weight_variable([1024, 10])
-    b_fc2 = bias_variable([10])
+    W_fc2 = weight_variable([1024, 2])
+    b_fc2 = bias_variable([2])
 
     y_conv = tf.matmul(h_fc1_drop, W_fc2) + b_fc2
   return y_conv, keep_prob
@@ -167,7 +165,7 @@ def main(_):
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--data_dir', type=str,
-                      default='/tmp/tensorflow/mnist/input_data',
+                      default='/finished',
                       help='Directory for storing input data')
   FLAGS, unparsed = parser.parse_known_args()
 
