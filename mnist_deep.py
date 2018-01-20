@@ -29,6 +29,8 @@ import argparse
 import sys
 import tempfile
 
+import input_data.py
+
 import tensorflow as tf
 
 FLAGS = None
@@ -165,7 +167,7 @@ def main(_):
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--data_dir', type=str,
-                      default='/finished',
+                      default='/Users/Jeff/Desktop/SpartaHack/Git repo clone 930am/Spartahack2018/input_data/',
                       help='Directory for storing input data')
   FLAGS, unparsed = parser.parse_known_args()
 
