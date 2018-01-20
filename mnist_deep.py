@@ -51,11 +51,11 @@ def deepnn(x):
   # Last dimension is for "features" - there is only one here, since images are
   # grayscale -- it would be 3 for an RGB image, 4 for RGBA, etc.
   with tf.name_scope('reshape'):
-    x_image = tf.reshape(x, [-1, 28, 28, 1])
+    x_image = tf.reshape(x, [-1, 500, 500, 3])
 
   # First convolutional layer - maps one grayscale image to 32 feature maps.
   with tf.name_scope('conv1'):
-    W_conv1 = weight_variable([5, 5, 1, 32])
+    W_conv1 = weight_variable([5, 5, 1, 18])
     b_conv1 = bias_variable([32])
     h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
 
@@ -65,7 +65,7 @@ def deepnn(x):
 
   # Second convolutional layer -- maps 32 feature maps to 64.
   with tf.name_scope('conv2'):
-    W_conv2 = weight_variable([5, 5, 32, 64])
+    W_conv2 = weight_variable([5, 5, 18, 36])
     b_conv2 = bias_variable([64])
     h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
 
@@ -125,7 +125,7 @@ def main(_):
   mnist = input_data.read_data_sets(FLAGS.data_dir)
 
   # Create the model
-  x = tf.placeholder(tf.float32, [None, 784])
+  x = tf.placeholder(tf.float32, [None, 250000])
 
   # Define loss and optimizer
   y_ = tf.placeholder(tf.int64, [None])
