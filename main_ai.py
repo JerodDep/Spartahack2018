@@ -201,13 +201,13 @@ if __name__ == '__main__':
   parser.add_argument(
       '--hidden1',
       type=int,
-      default=128,
+      default=18,
       help='Number of units in hidden layer 1.'
   )
   parser.add_argument(
       '--hidden2',
       type=int,
-      default=32,
+      default=36,
       help='Number of units in hidden layer 2.'
   )
   parser.add_argument(
