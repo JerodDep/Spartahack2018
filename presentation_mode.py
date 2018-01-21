@@ -77,7 +77,7 @@ while (True):
 
 
     #see if it's been x amount of time, then load a new video, alternating between violent and non
-    if time.time() - start >= 45:
+    if time.time() - start >= 20:
         cap.release()
         if decision_count % 2 == 0:
             cap = load_vid(decision_count, nv_count, v_count)
@@ -109,15 +109,18 @@ while (True):
 
         result = predict.prediction(frame, sess, y_true, y_pred, x)
 
-        if (result.item(0) > .5):
+        if (result.item(0) > .6):
             violence_marks += 1
         else:
             violence_marks = 0
 
         if violence_marks >= 3:
-            print ('violence')
+            if not violent:
+                print ('violence detected')
+                print (result)
             violent = True
         elif (violence_marks < 3 and violent):
+            print (result)
             violent = False
             clear()
 
