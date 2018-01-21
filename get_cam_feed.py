@@ -26,7 +26,7 @@ current = 0
 ## Let us restore the saved model
 sess = tf.Session()
 # Step-1: Recreate the network graph. At this step only graph is created.
-saver = tf.train.import_meta_graph('violence-model.meta')
+saver = tf.train.import_meta_graph('trained-model2.ckpt.meta')
 # Step-2: Now let's load the weights saved using the restore method.
 saver.restore(sess, tf.train.latest_checkpoint('./'))
 
@@ -41,6 +41,8 @@ y_pred = graph.get_tensor_by_name("y_pred:0")
 x = graph.get_tensor_by_name("x:0")
 y_true = graph.get_tensor_by_name("y_true:0")
 
+violence_marks = 0
+
 #Get Camera feed
 while(True):
     #Only captures image if it has gone through 20 loops.
@@ -53,7 +55,16 @@ while(True):
         # Display the resulting frame
         cv2.imshow('frame',frame)
 
-        predict.prediction(frame, sess, y_true, y_pred, x)
+        result = predict.prediction(frame, sess, y_true, y_pred, x)
+
+        if (result.item(0) > 95):
+            violence_marks += 1
+        else:
+            violence_marks = 0
+
+        if violence_marks >= 3:
+            print ('violence')
+
     
     #waitKey(1) will wait 1 milisecond for the break key (q)
     if cv2.waitKey(1) & 0xFF == ord('q'):

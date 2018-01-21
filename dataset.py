@@ -17,7 +17,7 @@ def load_train(train_path, image_size, classes, videoes):
         index = classes.index(fields)
         print('Now going to read {} files (Index: {})'.format(fields, index))
         #path = os.path.join(train_path, fields, '*.avi')
-        path = os.path.join(train_path, fields, '.g')
+        path = os.path.join(train_path, fields, '*g')
         files = glob.glob(path)
         if (not videoes):
             for fl in files:

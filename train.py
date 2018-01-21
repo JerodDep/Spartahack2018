@@ -15,14 +15,14 @@ from tensorflow import set_random_seed
 set_random_seed(2)
 
 
-batch_size = 32
+batch_size = 5
 
 #Prepare input data
 classes = ['violent','non-violent']
 num_classes = len(classes)
 
 # 20% of the data will automatically be used for validation
-validation_size = 0.2
+validation_size = 0.1
 img_size = 128
 num_channels = 3
 train_path='training_data'
@@ -156,7 +156,7 @@ layer_fc2 = create_fc_layer(input=layer_fc1,
 y_pred = tf.nn.softmax(layer_fc2,name='y_pred')
 
 y_pred_cls = tf.argmax(y_pred, dimension=1)
-session.run(tf.global_variables_initializer())
+#session.run(tf.global_variables_initializer())
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=layer_fc2,
                                                     labels=y_true)
 cost = tf.reduce_mean(cross_entropy)
@@ -165,7 +165,7 @@ correct_prediction = tf.equal(y_pred_cls, y_true_cls)
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 
-session.run(tf.global_variables_initializer()) 
+#session.run(tf.global_variables_initializer())
 
 
 def show_progress(epoch, feed_dict_train, feed_dict_validate, val_loss):
@@ -177,6 +177,7 @@ def show_progress(epoch, feed_dict_train, feed_dict_validate, val_loss):
 total_iterations = 0
 
 saver = tf.train.Saver()
+saver.restore(session, tf.train.latest_checkpoint('./'))
 def train(num_iteration):
     global total_iterations
     
@@ -202,6 +203,6 @@ def train(num_iteration):
 
 
     total_iterations += num_iteration
-    saver.save(session, './violence-model')
 
-train(num_iteration=10000)
+train(num_iteration=500)
+saver.save(session, './trained-model2.ckpt')
