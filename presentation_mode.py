@@ -116,13 +116,15 @@ while (True):
 
         if violence_marks >= 3:
             if not violent:
+                clear()
                 print ('violence detected')
                 print (result)
             violent = True
         elif (violence_marks < 3 and violent):
-            print (result)
             violent = False
             clear()
+            print('no violence detected')
+            print (result)
 
 
     # waitKey(1) will wait 1 milisecond for the break key (q)
