@@ -67,10 +67,14 @@ clear = lambda: os.system('cls')
 
 start = time.time() # set first start time
 
+violent = False
+
+clear()
+
 # Get Camera feed
 while (True):
 
-    clear()
+
 
     #see if it's been x amount of time, then load a new video, alternating between violent and non
     if time.time() - start >= 45:
@@ -105,13 +109,17 @@ while (True):
 
         result = predict.prediction(frame, sess, y_true, y_pred, x)
 
-        if (result.item(0) > .63):
+        if (result.item(0) > .5):
             violence_marks += 1
         else:
             violence_marks = 0
 
         if violence_marks >= 3:
             print ('violence')
+            violent = True
+        elif (violence_marks < 3 and violent):
+            violent = False
+            clear()
 
 
     # waitKey(1) will wait 1 milisecond for the break key (q)

@@ -58,7 +58,7 @@ while(True):
 
         result = predict.prediction(frame, sess, y_true, y_pred, x)
 
-        if (result.item(0) > 95):
+        if (result.item(0) > .95):
             violence_marks += 1
         else:
             violence_marks = 0
