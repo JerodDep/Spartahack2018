@@ -15,7 +15,7 @@ from tensorflow import set_random_seed
 set_random_seed(2)
 
 
-batch_size = 32
+batch_size = 10
 
 #Prepare input data
 classes = ['violent','non-violent']
@@ -199,9 +199,9 @@ def train(num_iteration):
             epoch = int(i / int(data.train.num_examples/batch_size))    
             
             show_progress(epoch, feed_dict_tr, feed_dict_val, val_loss)
-            saver.save(session, './violence-model')
 
 
     total_iterations += num_iteration
+    saver.save(session, './violence-model')
 
 train(num_iteration=500)
