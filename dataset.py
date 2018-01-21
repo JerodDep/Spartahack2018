@@ -5,11 +5,12 @@ from sklearn.utils import shuffle
 import numpy as np
 
 
-def load_train(train_path, image_size, classes):
+def load_train(train_path, image_size, classes, videoes):
     images = []
     labels = []
     img_names = []
     cls = []
+    fps = 20
 
     print('Going to read training images')
     for fields in classes:   
@@ -17,18 +18,46 @@ def load_train(train_path, image_size, classes):
         print('Now going to read {} files (Index: {})'.format(fields, index))
         path = os.path.join(train_path, fields, '*g')
         files = glob.glob(path)
-        for fl in files:
-            image = cv2.imread(fl)
-            image = cv2.resize(image, (image_size, image_size),0,0, cv2.INTER_LINEAR)
-            image = image.astype(np.float32)
-            image = np.multiply(image, 1.0 / 255.0)
-            images.append(image)
-            label = np.zeros(len(classes))
-            label[index] = 1.0
-            labels.append(label)
-            flbase = os.path.basename(fl)
-            img_names.append(flbase)
-            cls.append(fields)
+        if (not videoes):
+            for fl in files:
+                image = cv2.imread(fl)
+                image = cv2.resize(image, (image_size, image_size),0,0, cv2.INTER_LINEAR)
+                image = image.astype(np.float32)
+                image = np.multiply(image, 1.0 / 255.0)
+                images.append(image)
+                label = np.zeros(len(classes))
+                label[index] = 1.0
+                labels.append(label)
+                flbase = os.path.basename(fl)
+                img_names.append(flbase)
+                cls.append(fields)
+        else:
+            for fl in files:
+                # start video
+                cap = cv2.VideoCapture(fl)
+
+                image_count = 0
+                current = 0
+                while (cap.isOpened()):
+                    if (current % fps == 0):
+                        # Resets current (current is the current loop number) to 0.
+                        current = 0
+                        # Capture frame-by-frame (frame is the actual image)
+                        ret, frame = cap.read()
+
+                        image = cv2.resize(frame, (image_size, image_size), 0, 0, cv2.INTER_LINEAR)
+                        image = image.astype(np.float32)
+                        image = np.multiply(image, 1.0 / 255.0)
+                        images.append(frame)
+                        label = np.zeros(len(classes))
+                        label[index] = 1.0
+                        labels.append(label)
+                        flbase = os.path.basename(fl + '.' + str(image_count))
+                        img_names.append(flbase)
+                        cls.append(fields)
+                        image_count += 1
+                    current += 1
+
     images = np.array(images)
     labels = np.array(labels)
     img_names = np.array(img_names)
@@ -89,12 +118,12 @@ class DataSet(object):
     return self._images[start:end], self._labels[start:end], self._img_names[start:end], self._cls[start:end]
 
 
-def read_train_sets(train_path, image_size, classes, validation_size):
+def read_train_sets(train_path, image_size, classes, videoes, validation_size):
   class DataSets(object):
     pass
   data_sets = DataSets()
 
-  images, labels, img_names, cls = load_train(train_path, image_size, classes)
+  images, labels, img_names, cls = load_train(train_path, image_size, classes, videoes)
   images, labels, img_names, cls = shuffle(images, labels, img_names, cls)  
 
   if isinstance(validation_size, float):

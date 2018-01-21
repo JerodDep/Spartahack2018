@@ -60,6 +60,7 @@ while(True):
         # When everything done, release the capture
         cap.release()
         cv2.destroyAllWindows()
+        sess.close()
         break
     current += 1
 
