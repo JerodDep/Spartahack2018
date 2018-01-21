@@ -16,7 +16,8 @@ def load_train(train_path, image_size, classes, videoes):
     for fields in classes:   
         index = classes.index(fields)
         print('Now going to read {} files (Index: {})'.format(fields, index))
-        path = os.path.join(train_path, fields, '*g')
+        #path = os.path.join(train_path, fields, '*.avi')
+        path = os.path.join(train_path, fields, '.g')
         files = glob.glob(path)
         if (not videoes):
             for fl in files:
@@ -34,6 +35,7 @@ def load_train(train_path, image_size, classes, videoes):
         else:
             for fl in files:
                 # start video
+                print (fl)
                 cap = cv2.VideoCapture(fl)
 
                 image_count = 0
@@ -45,10 +47,17 @@ def load_train(train_path, image_size, classes, videoes):
                         # Capture frame-by-frame (frame is the actual image)
                         ret, frame = cap.read()
 
+                        if (not ret):
+                            cap.release()
+                            cv2.destroyAllWindows()
+                            break
+
+                        cv2.imshow('window', frame)
+
                         image = cv2.resize(frame, (image_size, image_size), 0, 0, cv2.INTER_LINEAR)
                         image = image.astype(np.float32)
                         image = np.multiply(image, 1.0 / 255.0)
-                        images.append(frame)
+                        images.append(image)
                         label = np.zeros(len(classes))
                         label[index] = 1.0
                         labels.append(label)
@@ -56,7 +65,14 @@ def load_train(train_path, image_size, classes, videoes):
                         img_names.append(flbase)
                         cls.append(fields)
                         image_count += 1
+
+                    if cv2.waitKey(1) & 0xFF == ord('q'):
+                        cap.release()
+                        cv2.destroyAllWindows()
+                        break
                     current += 1
+                cap.release()
+                cv2.destroyAllWindows()
 
     images = np.array(images)
     labels = np.array(labels)

@@ -15,20 +15,20 @@ from tensorflow import set_random_seed
 set_random_seed(2)
 
 
-batch_size = 10
+batch_size = 32
 
 #Prepare input data
 classes = ['violent','non-violent']
 num_classes = len(classes)
 
 # 20% of the data will automatically be used for validation
-validation_size = 0.1
+validation_size = 0.2
 img_size = 128
 num_channels = 3
 train_path='training_data'
 
 # We shall load all the training and validation images and labels into memory using openCV and use that during training
-data = dataset.read_train_sets(train_path, img_size, classes, True, validation_size=validation_size)
+data = dataset.read_train_sets(train_path, img_size, classes, False, validation_size=validation_size)
 
 
 print("Complete reading input data. Will Now print a snippet of it")
@@ -204,4 +204,4 @@ def train(num_iteration):
     total_iterations += num_iteration
     saver.save(session, './violence-model')
 
-train(num_iteration=300)
+train(num_iteration=10000)
