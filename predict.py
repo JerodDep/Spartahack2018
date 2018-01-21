@@ -27,4 +27,5 @@ def prediction(image, sess, y_true, y_pred, x):
     feed_dict_testing = {x: x_batch, y_true: y_test_images}
     result=sess.run(y_pred, feed_dict=feed_dict_testing)
     # result is of this format [violent non-violent]
+
     return result

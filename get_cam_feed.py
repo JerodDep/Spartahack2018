@@ -45,6 +45,7 @@ violence_marks = 0
 
 #Get Camera feed
 while(True):
+
     #Only captures image if it has gone through 20 loops.
     if (current % fps == 0):
         #Resets current (current is the current loop number) to 0.
