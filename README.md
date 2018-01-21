@@ -1,1 +1,0 @@
-Spartahack2018
